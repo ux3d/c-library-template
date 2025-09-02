@@ -1,0 +1,7 @@
+{
+  "name": "c-project-template",
+  "version-semver": "0.0.0",
+  "description": "A template for C projects",
+
+  "dependencies": ["gtest"]
+}

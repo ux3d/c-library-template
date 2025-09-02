@@ -1,0 +1,132 @@
+# GitHub Actions workflow for building, testing, and packaging viewmap-generator
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    name: Build, Test, and Package
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    env:
+      VCPKG_DEFAULT_TRIPLET: ${{ matrix.os == 'windows-latest' && 'x64-windows' || matrix.os == 'macos-latest' && 'arm64-osx' || 'x64-linux' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install CMake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "3.25.0"
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgDirectory: "${{ github.workspace }}/vcpkg"
+          vcpkgJsonGlob: "**/vcpkg.json"
+
+      - name: Run CMake+vcpkg+Ninja+CTest to build packages and generate/build/test the code.
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: "ninja-vcpkg-release"
+          buildPreset: "ninja-vcpkg-release"
+          testPreset: "test-release"
+
+      - name: Get vcpkg.json version
+        id: vcpkg_version
+        shell: bash
+        run: |
+          VERSION=$(jq -r '."version-semver"' vcpkg.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Ensure zip is installed (Windows)
+        if: runner.os == 'Windows'
+        run: choco install zip -y
+        shell: pwsh
+      - name: Package library artifacts as zip
+        shell: bash
+        if: success()
+        run: |
+          OS_NAME="${{ matrix.os }}"
+          VERSION="${{ steps.vcpkg_version.outputs.version }}"
+          ZIP_NAME="viewmap-generator-${OS_NAME}-v${VERSION}.zip"
+          cmake --install build --prefix install
+          cd install
+          zip -r "../$ZIP_NAME" .
+          cd ..
+
+      - name: Upload zipped library artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: viewmap-generator-${{ matrix.os }}-zipped
+          path: viewmap-generator-${{ matrix.os }}-v${{ steps.vcpkg_version.outputs.version }}.zip
+
+  release-on-vcpkg-version:
+    needs: build-test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get vcpkg.json version
+        id: vcpkg_version
+        run: |
+          VERSION=$(jq -r '."version-semver"' vcpkg.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if version tag exists
+        id: check_tag
+        run: |
+          TAG="v${{ steps.vcpkg_version.outputs.version }}"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists. Skipping release."
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Tag $TAG does not exist. Will create release."
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download all zipped artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: viewmap-generator-*-zipped
+          path: ./release-artifacts
+
+      - name: List downloaded zips
+        run: ls -lh ./release-artifacts
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          TAG="v${{ steps.vcpkg_version.outputs.version }}"
+          LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -n "$LAST_TAG" ]; then
+            git log "$LAST_TAG"..HEAD --oneline > commits.txt
+          else
+            git log --oneline > commits.txt
+          fi
+          echo 'changelog<<EOF' >> $GITHUB_OUTPUT
+          cat commits.txt >> $GITHUB_OUTPUT
+          echo EOF >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.vcpkg_version.outputs.version }}
+          name: viewmap-generator v${{ steps.vcpkg_version.outputs.version }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          files: ./release-artifacts/**/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

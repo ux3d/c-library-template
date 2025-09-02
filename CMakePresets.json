@@ -1,0 +1,90 @@
+{
+    "version": 4,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 19,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "ninja-vcpkg-release",
+            "displayName": "Ninja Release with vcpkg",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+            }
+        },
+        {
+            "name": "ninja-vcpkg-debug",
+            "displayName": "Ninja Debug with vcpkg",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+            }
+        },
+        {
+            "name": "ninja-vcpkg-arm64-macos",
+            "displayName": "Ninja arm64 macOS with vcpkg",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
+                "CMAKE_OSX_ARCHITECTURES": "arm64"
+            }
+        },
+        {
+            "name": "Clang 15",
+            "displayName": "Clang 15.0.0 arm64-apple-darwin23.1.0",
+            "description": "Using compilers: C = /usr/bin/clang, CXX = /usr/bin/clang++",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_C_COMPILER": "/usr/bin/clang",
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "ninja-vcpkg-release",
+            "configurePreset": "ninja-vcpkg-release"
+        },
+        {
+            "name": "ninja-vcpkg-debug",
+            "configurePreset": "ninja-vcpkg-debug"
+        },
+        {
+            "name": "ninja-vcpkg-arm64-macos",
+            "configurePreset": "ninja-vcpkg-arm64-macos"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "test-release",
+            "configurePreset": "ninja-vcpkg-release",
+            "output": {
+                "outputOnFailure": true
+            }
+        },
+        {
+            "name": "test-debug",
+            "configurePreset": "ninja-vcpkg-debug",
+            "output": {
+                "outputOnFailure": true
+            }
+        },
+        {
+            "name": "test-arm64-macos",
+            "configurePreset": "ninja-vcpkg-arm64-macos",
+            "output": {
+                "outputOnFailure": true
+            }
+        }
+    ]
+}
