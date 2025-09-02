@@ -28,16 +28,16 @@ jobs:
         with:
           cmake-version: "3.25.0"
 
-      - name: Configure and Build (CMake+vcpkg+Ninja)
+      - name: Configure and Build (CMake+vcpkg)
         uses: lukka/run-cmake@v10
         with:
-          configurePreset: "ninja-vcpkg-release"
-          buildPreset: "ninja-vcpkg-release"
+          configurePreset: ${{ matrix.os == 'windows-latest' && 'msvc-vcpkg-release' || matrix.os == 'macos-latest' && 'ninja-vcpkg-arm64-macos' || 'ninja-vcpkg-release' }}
+          buildPreset: ${{ matrix.os == 'windows-latest' && 'msvc-vcpkg-release' || matrix.os == 'macos-latest' && 'ninja-vcpkg-arm64-macos' || 'ninja-vcpkg-release' }}
 
       - name: Run Tests (CTest)
         uses: lukka/run-cmake@v10
         with:
-          testPreset: "test-release"
+          testPreset: ${{ matrix.os == 'windows-latest' && 'test-msvc-release' || matrix.os == 'macos-latest' && 'test-arm64-macos' || 'test-release' }}
 
       - name: Get vcpkg.json version
         id: vcpkg_version

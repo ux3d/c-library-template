@@ -5,9 +5,6 @@ cmake_minimum_required(VERSION 3.15)
 # Enable compile_commands.json for clang-based tools
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake"
-  CACHE STRING "Vcpkg toolchain file")
-
 
 # Project name and language
 project(c_library_template C CXX)
@@ -19,6 +16,8 @@ project(c_library_template C CXX)
 # If not, you can specify the toolchain file manually when configuring:
 #   cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake
 # No extra code is needed here for basic usage.
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+  CACHE STRING "Vcpkg toolchain file")
 
 
 # -------------------------------

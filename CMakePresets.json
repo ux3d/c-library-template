@@ -36,6 +36,26 @@
         "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "CMAKE_OSX_ARCHITECTURES": "arm64"
       }
+    },
+    {
+      "name": "msvc-vcpkg-release",
+      "displayName": "MSVC Release with vcpkg",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build-msvc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      }
+    },
+    {
+      "name": "msvc-vcpkg-debug",
+      "displayName": "MSVC Debug with vcpkg",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build-msvc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      }
     }
   ],
   "buildPresets": [
@@ -50,6 +70,14 @@
     {
       "name": "ninja-vcpkg-arm64-macos",
       "configurePreset": "ninja-vcpkg-arm64-macos"
+    },
+    {
+      "name": "msvc-vcpkg-release",
+      "configurePreset": "msvc-vcpkg-release"
+    },
+    {
+      "name": "msvc-vcpkg-debug",
+      "configurePreset": "msvc-vcpkg-debug"
     }
   ],
   "testPresets": [
@@ -70,6 +98,20 @@
     {
       "name": "test-arm64-macos",
       "configurePreset": "ninja-vcpkg-arm64-macos",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "test-msvc-release",
+      "configurePreset": "msvc-vcpkg-release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "test-msvc-debug",
+      "configurePreset": "msvc-vcpkg-debug",
       "output": {
         "outputOnFailure": true
       }
