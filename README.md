@@ -17,6 +17,7 @@ This repository is a **GitHub template for modern C libraries**. It provides a r
 - **Easy project bootstrap:** Just use this template to start a new C library project.
 - **Cross-platform builds:** Automated CI for Windows, macOS, and Linux.
 - **Google Test integration:** Write tests in C++ using gtest, run them locally or in CI.
+- **vcpkg as a submodule:** No need to install vcpkg globally; it's included in the repository.
 - **vcpkg manifest mode:** Manage dependencies in `vcpkg.json`.
 - **CMake best practices:** Out-of-source builds, install rules, and exportable targets.
 
@@ -44,27 +45,25 @@ c-project-template/
 
 Click **"Use this template"** on GitHub to create your own repository.
 
-### 2. Clone your new repository
+### 2. Clone your new repository and initialize submodules (shallow)
 
 ```sh
 git clone https://github.com/your-org/your-new-c-library.git
 cd your-new-c-library
+git submodule update --init --depth 1 vcpkg
 ```
 
-### 3. Install dependencies with vcpkg
+### 3. Configure and build with CMake (dependencies installed automatically)
 
-```sh
-vcpkg install
-```
-
-### 4. Configure and build with CMake
+When you configure the project with CMake, vcpkg will automatically install all dependencies listed in `vcpkg.json`.
 
 ```sh
 cmake -B build -S .
 cmake --build build
 ```
 
-### 5. Run unit tests
+
+### 4. Run unit tests
 
 ```sh
 cd build
@@ -89,7 +88,7 @@ ctest
 
 ## Continuous Integration
 
-This template includes a sample GitHub Actions workflow for multi-platform builds and tests. See `.github/workflows/ci.yml` for details.
+This template includes a sample GitHub Actions workflow for multi-platform builds and tests. vcpkg is automatically bootstrapped and used by CI. See `.github/workflows/ci.yml` for details.
 
 ---
 
