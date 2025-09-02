@@ -1,4 +1,4 @@
-# GitHub Actions workflow for building, testing, and packaging viewmap-generator
+# GitHub Actions workflow for building, testing, and packaging
 
 name: CI
 
@@ -26,12 +26,6 @@ jobs:
         with:
           cmake-version: "3.25.0"
 
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgDirectory: "${{ github.workspace }}/vcpkg"
-          vcpkgJsonGlob: "**/vcpkg.json"
-
       - name: Run CMake+vcpkg+Ninja+CTest to build packages and generate/build/test the code.
         uses: lukka/run-cmake@v10
         with:
@@ -56,7 +50,7 @@ jobs:
         run: |
           OS_NAME="${{ matrix.os }}"
           VERSION="${{ steps.vcpkg_version.outputs.version }}"
-          ZIP_NAME="viewmap-generator-${OS_NAME}-v${VERSION}.zip"
+          ZIP_NAME="${OS_NAME}-v${VERSION}.zip"
           cmake --install build --prefix install
           cd install
           zip -r "../$ZIP_NAME" .
@@ -65,8 +59,8 @@ jobs:
       - name: Upload zipped library artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: viewmap-generator-${{ matrix.os }}-zipped
-          path: viewmap-generator-${{ matrix.os }}-v${{ steps.vcpkg_version.outputs.version }}.zip
+          name: ${{ matrix.os }}-zipped
+          path: ${{ matrix.os }}-v${{ steps.vcpkg_version.outputs.version }}.zip
 
   release-on-vcpkg-version:
     needs: build-test
@@ -101,7 +95,7 @@ jobs:
       - name: Download all zipped artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: viewmap-generator-*-zipped
+          pattern: *-zipped
           path: ./release-artifacts
 
       - name: List downloaded zips
@@ -125,7 +119,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.vcpkg_version.outputs.version }}
-          name: viewmap-generator v${{ steps.vcpkg_version.outputs.version }}
+          name: v${{ steps.vcpkg_version.outputs.version }}
           body: ${{ steps.changelog.outputs.changelog }}
           files: ./release-artifacts/**/*.zip
         env:
