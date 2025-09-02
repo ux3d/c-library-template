@@ -1,5 +1,9 @@
+
 # Minimum required version of CMake
 cmake_minimum_required(VERSION 3.15)
+
+# Enable compile_commands.json for clang-based tools
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Project name and language
 project(c_library_template C CXX)
