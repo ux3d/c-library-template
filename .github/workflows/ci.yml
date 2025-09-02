@@ -59,8 +59,8 @@ jobs:
       - name: Upload zipped library artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}-zipped
-          path: ${{ matrix.os }}-v${{ steps.vcpkg_version.outputs.version }}.zip
+          name: library-${{ matrix.os }}-zipped
+          path: library-${{ matrix.os }}-v${{ steps.vcpkg_version.outputs.version }}.zip
 
   release-on-vcpkg-version:
     needs: build-test
@@ -95,7 +95,7 @@ jobs:
       - name: Download all zipped artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: *-zipped
+          pattern: library-*-zipped
           path: ./release-artifacts
 
       - name: List downloaded zips
