@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: true
 
       - name: Install CMake
         uses: jwlawson/actions-setup-cmake@v2
@@ -71,8 +73,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          submodules: true
 
       - name: Get vcpkg.json version
         id: vcpkg_version
