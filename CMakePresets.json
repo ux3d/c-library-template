@@ -105,6 +105,7 @@
     {
       "name": "test-msvc-release",
       "configurePreset": "msvc-vcpkg-release",
+      "configuration": "Release",
       "output": {
         "outputOnFailure": true
       }
@@ -112,6 +113,7 @@
     {
       "name": "test-msvc-debug",
       "configurePreset": "msvc-vcpkg-debug",
+      "configuration": "Debug",
       "output": {
         "outputOnFailure": true
       }
