@@ -17,6 +17,8 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     env:
       VCPKG_DEFAULT_TRIPLET: ${{ matrix.os == 'windows-latest' && 'x64-windows' || matrix.os == 'macos-latest' && 'arm64-osx' || 'x64-linux' }}
+      VCPKG_FEATURE_FLAGS: manifests,binarycaching
+      VCPKG_BUILD_TYPE: ${{ matrix.os == 'windows-latest' && 'release' || '' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
