@@ -2,11 +2,11 @@
 
 // Stub implementations
 
-EXPORT void c_library_template_init(void) {
+void c_library_template_init(void) {
     // Stub
 }
 
 
-EXPORT void c_library_template_cleanup(void) {
+void c_library_template_cleanup(void) {
     // Stub
 }

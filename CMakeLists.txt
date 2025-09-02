@@ -35,8 +35,10 @@ add_library(c_library_template SHARED
 )
 
 # Windows DLL export/import macros
+# Define C_LIBRARY_TEMPLATE_EXPORTS when building the DLL so the header uses dllexport (not dllimport).
 if(WIN32)
     target_compile_definitions(c_library_template PUBLIC C_LIBRARY_TEMPLATE_DLL)
+    target_compile_definitions(c_library_template PRIVATE C_LIBRARY_TEMPLATE_EXPORTS)
 endif()
 
 # -------------------------------
