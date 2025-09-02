@@ -28,11 +28,15 @@ jobs:
         with:
           cmake-version: "3.25.0"
 
-      - name: Run CMake+vcpkg+Ninja+CTest to build packages and generate/build/test the code.
+      - name: Configure and Build (CMake+vcpkg+Ninja)
         uses: lukka/run-cmake@v10
         with:
           configurePreset: "ninja-vcpkg-release"
           buildPreset: "ninja-vcpkg-release"
+
+      - name: Run Tests (CTest)
+        uses: lukka/run-cmake@v10
+        with:
           testPreset: "test-release"
 
       - name: Get vcpkg.json version
