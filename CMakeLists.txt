@@ -21,13 +21,10 @@ endif()
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-# Ensure shared libraries are built
-set(BUILD_SHARED_LIBS ON)
-
 # -------------------------------
 # Source Files
 # -------------------------------
-add_library(c_library_template
+add_library(c_library_template SHARED
     src/main.c                # Main source file
     # src/another_source.c    # <-- Add more source files here as needed
 )
@@ -79,20 +76,20 @@ enable_testing()
 
 find_package(GTest CONFIG REQUIRED)
 
-add_executable(gtest test/test_main.cpp)
-set_target_properties(gtest PROPERTIES LINKER_LANGUAGE CXX)
-target_compile_features(gtest PRIVATE cxx_std_17)
-target_link_libraries(gtest PRIVATE GTest::gtest GTest::gtest_main c_library_template)
-target_include_directories(gtest PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set_target_properties(gtest PROPERTIES
+add_executable(unit_tests test/test_main.cpp)
+set_target_properties(unit_tests PROPERTIES LINKER_LANGUAGE CXX)
+target_compile_features(unit_tests PRIVATE cxx_std_17)
+target_link_libraries(unit_tests PRIVATE GTest::gtest GTest::gtest_main c_library_template)
+target_include_directories(unit_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set_target_properties(unit_tests PROPERTIES
     LINKER_LANGUAGE CXX
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
-    BUILD_RPATH "${CMAKE_BINARY_DIR};${CMAKEl_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/lib"
+    BUILD_RPATH "${CMAKE_BINARY_DIR};${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/lib"
     INSTALL_RPATH "${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/lib"
 )
 
-add_test(NAME gtest COMMAND gtest)
+add_test(NAME unit_tests COMMAND unit_tests)
 
 # -------------------------------
 # Notes
