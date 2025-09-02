@@ -3,20 +3,20 @@
 
 #if defined(_WIN32) && defined(C_LIBRARY_TEMPLATE_DLL)
 #ifdef C_LIBRARY_TEMPLATE_EXPORTS
-#define C_LIBRARY_TEMPLATE_API __declspec(dllexport)
+#define EXPORT __declspec(dllexport)
 #else
-#define C_LIBRARY_TEMPLATE_API __declspec(dllimport)
+#define EXPORT __declspec(dllimport)
 #endif
 #else
-#define C_LIBRARY_TEMPLATE_API
+#define EXPORT
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-C_LIBRARY_TEMPLATE_API void c_library_template_init(void);
-C_LIBRARY_TEMPLATE_API void c_library_template_cleanup(void);
+EXPORT void c_library_template_init(void);
+EXPORT void c_library_template_cleanup(void);
 
 #ifdef __cplusplus
 }
