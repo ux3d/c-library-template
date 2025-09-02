@@ -83,7 +83,7 @@ find_package(GTest CONFIG REQUIRED)
 add_executable(unit_tests test/test_main.cpp)
 set_target_properties(unit_tests PROPERTIES LINKER_LANGUAGE CXX)
 target_compile_features(unit_tests PRIVATE cxx_std_17)
-target_link_libraries(unit_tests PRIVATE GTest::gtest GTest::gtest_main GTest::gmock_main GTest::gmock c_library_template)
+target_link_libraries(unit_tests PRIVATE c_library_template GTest::gtest GTest::gtest_main GTest::gmock_main GTest::gmock)
 target_include_directories(unit_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set_target_properties(unit_tests PROPERTIES
     LINKER_LANGUAGE CXX
