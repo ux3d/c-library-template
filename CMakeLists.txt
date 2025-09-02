@@ -79,6 +79,7 @@ enable_testing()
 
 find_package(GTest CONFIG REQUIRED)
 
+
 add_executable(unit_tests test/test_main.cpp)
 set_target_properties(unit_tests PROPERTIES LINKER_LANGUAGE CXX)
 target_compile_features(unit_tests PRIVATE cxx_std_17)
@@ -91,6 +92,13 @@ set_target_properties(unit_tests PROPERTIES
     BUILD_RPATH "${CMAKE_BINARY_DIR};${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/lib"
     INSTALL_RPATH "${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/lib"
 )
+
+# Windows-specific: ensure static GTest linking and correct definitions
+if(WIN32)
+    target_compile_definitions(unit_tests PRIVATE GTEST_LINKED_AS_SHARED_LIBRARY=0)
+    # Uncomment the next line if you get pthread errors
+    # target_compile_definitions(unit_tests PRIVATE GTEST_HAS_PTHREAD=0)
+endif()
 
 add_test(NAME unit_tests COMMAND unit_tests)
 
