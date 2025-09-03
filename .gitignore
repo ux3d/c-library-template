@@ -56,3 +56,4 @@ dkms.conf
 /vcpkg_installed
 /.cache
 build-msvc
+/.vscode

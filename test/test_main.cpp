@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
-extern "C" {
+
 #include "c_library_template.h"
-}
 
 TEST(ViewmapGenerator, InitDoesNotCrash)
 {

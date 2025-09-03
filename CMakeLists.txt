@@ -21,17 +21,23 @@ set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems
 
 
 # -------------------------------
-# C Standard
+# Default C Standard
 # -------------------------------
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # -------------------------------
+# Default C++ Standard
+# -------------------------------
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# -------------------------------
 # Source Files
 # -------------------------------
 add_library(c_library_template SHARED
-    src/main.c                # Main source file
-    # src/another_source.c    # <-- Add more source files here as needed
+    src/main.cpp                # Main source file
+    # src/another_source.cpp    # <-- Add more source files here as needed
 )
 
 # Windows DLL export/import macros
@@ -85,13 +91,11 @@ find_package(GTest CONFIG REQUIRED)
 
 
 add_executable(unit_tests test/test_main.cpp)
-set_target_properties(unit_tests PROPERTIES LINKER_LANGUAGE CXX)
-target_compile_features(unit_tests PRIVATE cxx_std_17)
 target_link_libraries(unit_tests PRIVATE c_library_template GTest::gmock_main)
 target_include_directories(unit_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set_target_properties(unit_tests PROPERTIES
     LINKER_LANGUAGE CXX
-    CXX_STANDARD 17
+    CXX_STANDARD 20
     CXX_STANDARD_REQUIRED YES
     BUILD_RPATH "${CMAKE_BINARY_DIR};${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/lib"
     INSTALL_RPATH "${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/lib"
