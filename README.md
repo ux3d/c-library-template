@@ -103,5 +103,5 @@ This template includes a sample GitHub Actions workflow for multi-platform build
 
 ## License
 
-This template is provided under the MIT License. See [LICENSE](LICENSE) for details.
+This template is provided under the MIT License. See [LICENSE](LICENSE.md) for details.
 
