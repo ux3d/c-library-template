@@ -1,7 +1,9 @@
 
 # C Library Template
 
-[![CI](https://github.com/ux3d/c-project-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ux3d/c-project-template/actions/workflows/ci.yml)
+[![CI](https://github.com/ux3d/c-library-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ux3d/c-library-template/actions/workflows/ci.yml)
+> [!TIP]
+> Change the badge link to point to your own repository.
 
 This repository is a **GitHub template for modern C libraries**. It provides a ready-to-use setup for:
 
@@ -10,11 +12,10 @@ This repository is a **GitHub template for modern C libraries**. It provides a r
 - **Dependency management** with [vcpkg](https://github.com/microsoft/vcpkg)
 - **Modern CMake** (C11, out-of-source builds, install rules)
 
-> [!NOTE] This template does not include an executable target for the library. Instead we recommend developing and testing the library by adding unit tests in the `test/` directory.
+> [!NOTE]
+> This template does not include an executable target for the library. Instead we recommend developing and testing the library by adding unit tests in the `test/` directory.
 >
 > If you need to create an executable for your library, you can do so by adding a new CMake target in your `CMakeLists.txt` file.
-
----
 
 ## Features
 
@@ -24,8 +25,6 @@ This repository is a **GitHub template for modern C libraries**. It provides a r
 - **vcpkg as a submodule:** No need to install vcpkg globally; it's included in the repository.
 - **vcpkg manifest mode:** Manage dependencies in `vcpkg.json`.
 - **CMake best practices:** Out-of-source builds, install rules, and exportable targets.
-
----
 
 ## Project Structure
 
@@ -40,8 +39,6 @@ c-project-template/
 ├── vcpkg.json         # vcpkg dependencies
 └── .github/           # GitHub Actions workflows
 ```
-
----
 
 ## Getting Started
 
@@ -59,7 +56,8 @@ git submodule update --init --depth 1 vcpkg
 
 ### 3. Configure and build with CMake (dependencies installed automatically)
 
-> [!TIP] If you are using Visual Studio Code, you can use the **CMake Tools extension** for easier configuration and building. 
+> [!TIP]
+> If you are using Visual Studio Code, you can use the **CMake Tools extension** for easier configuration and building. 
 >
 > Select the **configure preset** from the CMake Tools Extension in the status bar at the bottom. Then click **build** to build the project.
 
@@ -73,7 +71,8 @@ cmake --build build
 
 ### 4. Run unit tests
 
-> [!TIP] If you are using Visual Studio Code, you can use the **CMake Tools extension** to run tests easily.
+> [!TIP]
+> If you are using Visual Studio Code, you can use the **CMake Tools extension** to run tests easily.
 >
 > Simply open the command palette (Ctrl+Shift+P) and type "CMake: Run Tests" to execute all tests or click on **Run CTest** in the status bar at the bottom. This will also configure and build the project.
 
@@ -83,8 +82,6 @@ ctest
 # or run the test binary directly
 ./gtest
 ```
-
----
 
 ## Customization
 
@@ -96,17 +93,13 @@ ctest
 - **Add source or test files:**
     - Place C sources in `src/`, headers in `include/`, and tests in `test/`.
 
----
-
 ## Continuous Integration
 
 This template includes a sample GitHub Actions workflow for multi-platform builds and tests. vcpkg is automatically bootstrapped and used by CI. See `.github/workflows/ci.yml` for details.
 
-> [!NOTE] To trigger a new release, update the `version-semver` value in `vcpkg.json`. **Any pushes to the main branch will update the current version!**
+> [!NOTE]
+> To trigger a new release, update the `version-semver` value in `vcpkg.json`. **Any pushes to the main branch will update the current version!**
 
-
-
----
 
 ## License
 
