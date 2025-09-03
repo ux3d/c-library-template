@@ -97,7 +97,7 @@ set_target_properties(unit_tests PROPERTIES
     INSTALL_RPATH "${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/lib"
 )
 
-add_test(NAME unit_tests COMMAND unit_tests)
+add_test(AllTestsInMain unit_tests)
 
 # -------------------------------
 # Notes
