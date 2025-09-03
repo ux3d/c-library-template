@@ -57,8 +57,9 @@ jobs:
         run: |
           OS_NAME="${{ matrix.os }}"
           VERSION="${{ steps.vcpkg_version.outputs.version }}"
-          ZIP_NAME="${OS_NAME}-v${VERSION}.zip"
-          cmake --install build --prefix install
+          ZIP_NAME="library-${OS_NAME}-v${VERSION}.zip"
+          BUILD_DIR="${{ matrix.os == 'windows-latest' && 'build-msvc' || 'build' }}"
+          cmake --install $BUILD_DIR --prefix install
           cd install
           zip -r "../$ZIP_NAME" .
           cd ..
