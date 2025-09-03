@@ -55,3 +55,4 @@ dkms.conf
 /Testing
 /vcpkg_installed
 /.cache
+build-msvc

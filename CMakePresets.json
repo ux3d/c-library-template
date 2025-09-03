@@ -73,10 +73,12 @@
     },
     {
       "name": "msvc-vcpkg-release",
+      "configuration": "Release",
       "configurePreset": "msvc-vcpkg-release"
     },
     {
       "name": "msvc-vcpkg-debug",
+      "configuration": "Debug",
       "configurePreset": "msvc-vcpkg-debug"
     }
   ],

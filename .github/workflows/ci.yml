@@ -33,7 +33,6 @@ jobs:
         with:
           configurePreset: ${{ matrix.os == 'windows-latest' && 'msvc-vcpkg-release' || matrix.os == 'macos-latest' && 'ninja-vcpkg-arm64-macos' || 'ninja-vcpkg-release' }}
           buildPreset: ${{ matrix.os == 'windows-latest' && 'msvc-vcpkg-release' || matrix.os == 'macos-latest' && 'ninja-vcpkg-arm64-macos' || 'ninja-vcpkg-release' }}
-          buildPresetAdditionalArgs: ${{ matrix.os == 'windows-latest' && '["--config", "Release"]' || '[]' }}
 
       - name: Run Tests (CTest)
         uses: lukka/run-cmake@v10
